@@ -142,6 +142,10 @@ class Nilai_model extends CI_Model
     {
         return $this->db->get($this->_table)->result();
     }
+    public function Tambah_data($data, $table)
+    {
+        return $this->db->insert($table, $data);
+    }
     function get_nilai_list($limit, $start, $tahun = null, $periode = null)
     {
         $this->db->select('*');
@@ -218,7 +222,7 @@ class Nilai_model extends CI_Model
         // $qr = $this->db->query("SELECT * FROM nilai where id_supplier='" . $this->id_supplier . "' and tahun='" . $this->tahun . "' and periode='" . $this->periode . "'");
         // //echo $query->num_rows();
         // if ($qr->num_rows() > 0) {
-            return $this->db->update($this->_table, $this, array('id_nilai' => $post['id']));
+        return $this->db->update($this->_table, $this, array('id_nilai' => $post['id']));
         // } else {
         //     $this->id_nilai = mt_rand(1000, 9999);
         //     return $this->db->insert($this->_table, $this);

@@ -134,15 +134,16 @@ class Nilai extends CI_Controller
         $validation->set_rules($nilai->rules());
 
         if ($validation->run()) {
-            var_dump('oi'); die;
+            var_dump('oi');
+            die;
             $nilai->update();
             $this->session->set_flashdata('success', 'Berhasil disimpan');
         }
 
         $data["nilai"] = $nilai->getById($id);
-        if (!$data["nilai"]){
-            var_dump('oi'); die;
-
+        if (!$data["nilai"]) {
+            var_dump('oi');
+            die;
         };
 
         $this->load->view("nilai/edit", $data);
@@ -151,34 +152,91 @@ class Nilai extends CI_Controller
     public function UpdateNilai()
     {
         # code...
-        $data = $this->db->get_where('nilai', array('id_nilai' => $this->input->post('id') ))->row();
+        $data = $this->db->get_where('nilai', array('id_nilai' => $this->input->post('id')))->row();
+        $tahun = $this->input->post('tahun');
+        $periode = $this->input->post('periode');
 
-        $data_update = array(
-            'rasa' => $this->input->post('rasa'),
-            'aroma' => $this->input->post('aroma'),
-            'warna' => $this->input->post('warna'),
-            'aksesibilitas' => $this->input->post('aksesibilitas'),
-            'packaging' => $this->input->post('packaging'),
-            'konsistensi' => $this->input->post('konsistensi'),
-            'harga' => $this->input->post('harga'),
-            'fleksibilitas' => $this->input->post('fleksibilitas'),
-            'garansi' => $this->input->post('garansi'),
-            'jarak' => $this->input->post('jarak'),
-            'lokasi' => $this->input->post('lokasi'),
-            'legalitas' => $this->input->post('legalitas'),
-            'manajerial' => $this->input->post('manajerial'),
-            'komunikasi' => $this->input->post('komunikasi'),
-            'id_supplier'=>$data->id_supplier,
-            
+        if (($tahun != $data->tahun) || $periode != $data->periode) {
+            $data_sup = $this->db->get('nilai')->result_array();
+            if ($data_sup == null) {
+                $id = 'NI000001';
+            } else {
+                $id_code = null;
+                foreach ($data_sup as $rkm) {
+                    $code =  substr($rkm['id_nilai'], 2);
+                    if ($id_code == null) {
+
+                        $id_code = $code;
+                    } else {
+                        if ($code > $id_code) {
+                            $id_code = $code;
+                        }
+                    }
+                }
+                $id = 'NI' . str_pad($id_code + 1, 6, '0', STR_PAD_LEFT);
+            }
+            $data_update = array(
+                'id_nilai' => $id,
+                'tahun' => $this->input->post('tahun'),
+                'periode' => $this->input->post('periode'),
+                'rasa' => $this->input->post('rasa'),
+                'aroma' => $this->input->post('aroma'),
+                'warna' => $this->input->post('warna'),
+                'aksesibilitas' => $this->input->post('aksesibilitas'),
+                'packaging' => $this->input->post('packaging'),
+                'konsistensi' => $this->input->post('konsistensi'),
+                'harga' => $this->input->post('harga'),
+                'fleksibilitas' => $this->input->post('fleksibilitas'),
+                'garansi' => $this->input->post('garansi'),
+                'jarak' => $this->input->post('jarak'),
+                'lokasi' => $this->input->post('lokasi'),
+                'legalitas' => $this->input->post('legalitas'),
+                'manajerial' => $this->input->post('manajerial'),
+                'komunikasi' => $this->input->post('komunikasi'),
+                'id_supplier' => $data->id_supplier,
+                'id_users' => $this->session->userdata('id_users'),
+                'status' => 1
 
 
-        );
-        $where = array(
-            'id_nilai' => $this->input->post('id')
-        );
+
+            );
+            $this->nilai_model->Tambah_data($data_update, 'nilai');
+        } else {
+            $data_update = array(
+                'rasa' => $this->input->post('rasa'),
+                'aroma' => $this->input->post('aroma'),
+                'warna' => $this->input->post('warna'),
+                'aksesibilitas' => $this->input->post('aksesibilitas'),
+                'packaging' => $this->input->post('packaging'),
+                'konsistensi' => $this->input->post('konsistensi'),
+                'harga' => $this->input->post('harga'),
+                'fleksibilitas' => $this->input->post('fleksibilitas'),
+                'garansi' => $this->input->post('garansi'),
+                'jarak' => $this->input->post('jarak'),
+                'lokasi' => $this->input->post('lokasi'),
+                'legalitas' => $this->input->post('legalitas'),
+                'manajerial' => $this->input->post('manajerial'),
+                'komunikasi' => $this->input->post('komunikasi'),
+                'id_supplier' => $data->id_supplier,
+                'id_users' => $this->session->userdata('id_users'),
+                'status' => 1
+
+
+
+            );
+            $where = array(
+                'id_nilai' => $this->input->post('id')
+            );
+            $this->nilai_model->edit_data($where, $data_update, 'nilai');
+        }
+
+
+
+
+
+
         // var_dump($data_update);
-        $this->nilai_model->edit_data($where, $data_update, 'nilai');
-       
+        redirect(site_url('nilai'));
     }
 
     public function delete($id = null)

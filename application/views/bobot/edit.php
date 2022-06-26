@@ -59,12 +59,12 @@
 							<h4 class="m-0 font-weight-bold text-primary">Data Bobot Kriteria</h4>
 							<hr>
 
-							<form action="" method="post" enctype="multipart/form-data">
+							<form action="<?= base_url('Bobot/updateBobot') ?>" method="post" enctype="multipart/form-data">
 								<!-- Note: atribut action dikosongkan, artinya action-nya akan diproses 
 							oleh controller tempat vuew ini digunakan. Yakni index.php/bobot/edit/ID --->
-
-								<input type="hidden" name="id" value="1" />
-								<input type="hidden" name="id_admin" value="1" />
+								<!-- <input hidden type="text" name="id_bobot" value="<?= $bobot->id_bobot ?>"> -->
+								<input type="hidden" name="id" value="<?= $bobot->id_bobot ?>" />
+								<input type="hidden" name="id_admin" value="<?= $bobot->id_admin ?>" />
 								<div class="form-group">
 									<b><label for="rasa">Kriteria 1 (Rasa)</label></b>
 									<input class="form-control <?php echo form_error('rasa') ? 'is-invalid' : '' ?>" type="number" name="rasa" placeholder="rasa" value="<?php echo $bobot->rasa ?>" min="1" max="5" />
@@ -84,7 +84,7 @@
 
 								<div class="form-group">
 									<b><label for="warna">Kriteria 3 (Warna)</label></b>
-									<input class="form-control <?php echo form_error('warna') ? 'is-invalid' : '' ?>" type="number" name="warna" placeholder="warna" value="<?php echo $bobot->warna ?>" min="1" max="5"/>
+									<input class="form-control <?php echo form_error('warna') ? 'is-invalid' : '' ?>" type="number" name="warna" placeholder="warna" value="<?php echo $bobot->warna ?>" min="1" max="5" />
 									<div class="invalid-feedback">
 										<?php echo form_error('warna') ?>
 									</div>
@@ -134,7 +134,7 @@
 								</div>
 								<div class="form-group">
 									<b><label for="jarak">Kriteria 10 (Jarak)</label></b>
-									<input class="form-control <?php echo form_error('jarak') ? 'is-invalid' : '' ?>" type="number" name="jarak" placeholder="jarak" value="<?php echo $bobot->jarak ?>" min="1" max="5"/>
+									<input class="form-control <?php echo form_error('jarak') ? 'is-invalid' : '' ?>" type="number" name="jarak" placeholder="jarak" value="<?php echo $bobot->jarak ?>" min="1" max="5" />
 									<div class="invalid-feedback">
 										<?php echo form_error('jarak') ?>
 									</div>
